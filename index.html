@@ -6,6 +6,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1a3a5c">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SAP PM">
 <title>SAP PM – מדריך אחזקה</title>
 <style>
 :root {
@@ -32,6 +36,21 @@ body.hc {
   --g50:#f0f0f0;
 }
 body.hc * { border-color: #000 !important; }
+
+/* DARK MODE */
+body.dark {
+  --primary:#2563a8; --primary-l:#4a90d9; --primary-soft:#1a2a3a;
+  --accent:#e8693d; --accent-soft:#2a1a14;
+  --ok:#2a9e5f; --ok-soft:#0d2018;
+  --warn:#d4960a; --warn-soft:#1e1600;
+  --danger:#e05050; --danger-soft:#200a0a;
+  --g50:#1a1a1a; --g100:#222; --g200:#333; --g400:#666; --g600:#999; --g800:#ccc;
+  --text:#e8e8e6; --text-m:#9a9a96;
+  --border:#333; --surf:#1e1e1e; --bg:#121212;
+}
+body.dark .app-header { background:#0d1f33; }
+body.dark .sidebar { background:#161616; }
+body.dark .pv-modal { background:#111; }
 
 /* FONT SIZE LEVELS */
 body.fs-lg { --fs-base:20px; --fs-sm:17px; --fs-xs:14px; }
@@ -688,6 +707,228 @@ body.en { direction:ltr; }
   .pv-float-back{ display:block; }
   .pv-x{ display:none; }
 }
+
+/* ── SEARCH ── */
+.search-overlay{
+  display:none;position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.55);align-items:flex-start;justify-content:center;
+  padding-top:80px;
+}
+.search-overlay.open{display:flex;}
+.search-box{
+  background:var(--surf);border-radius:var(--r-lg);
+  width:min(95vw,600px);max-height:70vh;
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:var(--sh-md);
+}
+.search-input-wrap{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 16px;border-bottom:1px solid var(--border);
+}
+.search-input-wrap span{font-size:20px;}
+.search-input{
+  flex:1;border:none;outline:none;font-size:16px;
+  background:transparent;color:var(--text);
+  font-family:inherit;
+}
+.search-results{overflow-y:auto;max-height:50vh;}
+.search-result{
+  padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--g100);
+  transition:background .12s;
+}
+.search-result:hover{background:var(--primary-soft);}
+.search-result-title{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:3px;}
+.search-result-snippet{font-size:12px;color:var(--text-m);line-height:1.4;}
+.search-result mark{background:#fff3a3;color:var(--text);border-radius:2px;padding:0 2px;}
+.search-empty{padding:24px;text-align:center;color:var(--text-m);font-size:14px;}
+/* ── FLASHCARDS ── */
+.fc-overlay{
+  display:none;position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.6);align-items:center;justify-content:center;
+}
+.fc-overlay.open{display:flex;}
+.fc-modal{
+  background:var(--surf);border-radius:var(--r-lg);
+  width:min(95vw,480px);padding:28px 24px;
+  text-align:center;
+}
+.fc-progress{font-size:12px;color:var(--text-m);margin-bottom:16px;}
+.fc-card{
+  background:linear-gradient(135deg,var(--primary) 0%,var(--primary-l) 100%);
+  border-radius:14px;padding:36px 24px;margin-bottom:20px;
+  min-height:160px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;transition:transform .15s;
+}
+.fc-card:active{transform:scale(.97);}
+.fc-card-text{
+  font-size:20px;font-weight:700;color:#fff;line-height:1.4;
+}
+.fc-card-hint{
+  position:absolute;bottom:10px;font-size:11px;color:rgba(255,255,255,.6);
+}
+.fc-answer{
+  background:var(--ok-soft);border-radius:10px;padding:14px;
+  margin-bottom:16px;font-size:15px;color:var(--ok);font-weight:600;
+  display:none;
+}
+.fc-answer.show{display:block;}
+.fc-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.fc-btn{
+  padding:10px 20px;border-radius:9px;border:none;font-size:14px;
+  font-weight:600;cursor:pointer;min-height:44px;transition:all .15s;
+}
+.fc-btn-know{background:var(--ok);color:#fff;}
+.fc-btn-skip{background:var(--g100);color:var(--text);}
+.fc-btn-show{background:var(--primary);color:#fff;width:100%;}
+.fc-done{
+  padding:24px;text-align:center;
+  font-size:18px;font-weight:700;color:var(--primary);display:none;
+}
+.fc-done.show{display:block;}
+/* ── SLA CALCULATOR ── */
+.sla-calc-overlay{
+  display:none;position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.55);align-items:center;justify-content:center;
+}
+.sla-calc-overlay.open{display:flex;}
+.sla-calc-modal{
+  background:var(--surf);border-radius:var(--r-lg);
+  width:min(95vw,420px);padding:24px;
+}
+.sla-calc-title{font-size:18px;font-weight:700;color:var(--primary);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.sla-field{margin-bottom:14px;}
+.sla-label{font-size:13px;font-weight:600;color:var(--text-m);margin-bottom:5px;}
+.sla-select,.sla-datetime{
+  width:100%;padding:10px 12px;border-radius:8px;
+  border:1.5px solid var(--border);background:var(--surf);
+  color:var(--text);font-size:14px;font-family:inherit;
+}
+.sla-result{
+  border-radius:10px;padding:16px;margin-top:16px;text-align:center;
+  display:none;
+}
+.sla-result.show{display:block;}
+.sla-result.ok{background:var(--ok-soft);}
+.sla-result.warn{background:var(--warn-soft);}
+.sla-result.danger{background:var(--danger-soft);}
+.sla-deadline{font-size:22px;font-weight:800;margin-bottom:4px;}
+.sla-result.ok .sla-deadline{color:var(--ok);}
+.sla-result.warn .sla-deadline{color:var(--warn);}
+.sla-result.danger .sla-deadline{color:var(--danger);}
+.sla-countdown{font-size:15px;font-weight:600;margin-top:6px;}
+/* ── QUICK REFERENCE ── */
+.qref-overlay{
+  display:none;position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.55);align-items:center;justify-content:center;
+}
+.qref-overlay.open{display:flex;}
+.qref-modal{
+  background:var(--surf);border-radius:var(--r-lg);
+  width:min(95vw,540px);max-height:88vh;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.qref-header{
+  padding:16px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;background:var(--primary);color:#fff;
+}
+.qref-title{font-size:16px;font-weight:700;flex:1;}
+.qref-body{overflow-y:auto;padding:16px;}
+.qref-section{margin-bottom:20px;}
+.qref-section-title{
+  font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text-m);margin-bottom:10px;padding-bottom:5px;
+  border-bottom:1px solid var(--border);
+}
+.qref-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 10px;border-radius:7px;margin-bottom:4px;
+}
+.qref-item:nth-child(even){background:var(--g50);}
+.qref-key{
+  font-family:monospace;font-size:13px;font-weight:700;
+  background:var(--primary);color:#fff;
+  padding:3px 8px;border-radius:5px;min-width:90px;text-align:center;flex-shrink:0;
+}
+.qref-val{font-size:13px;color:var(--text);line-height:1.4;}
+.qref-print-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:10px 16px;background:var(--ok);color:#fff;
+  border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;
+  min-height:44px;
+}
+@media print{
+  body > *:not(.qref-overlay){display:none!important;}
+  .qref-overlay{display:flex!important;position:static!important;background:none!important;}
+  .qref-modal{box-shadow:none;max-height:none;width:100%;}
+  .qref-header button,.qref-print-btn{display:none!important;}
+}
+/* ── BOOKMARKS ── */
+.bm-btn{
+  position:absolute;top:8px;inset-inline-end:56px;
+  background:none;border:none;font-size:22px;cursor:pointer;
+  color:rgba(255,255,255,.5);transition:color .15s;z-index:10;
+  min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;
+}
+.bm-btn.saved{color:#ffd700;}
+.bm-btn:hover{color:rgba(255,255,255,.9);}
+.bm-list-overlay{
+  display:none;position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.55);align-items:flex-end;justify-content:center;
+}
+.bm-list-overlay.open{display:flex;}
+.bm-list-panel{
+  background:var(--surf);border-radius:18px 18px 0 0;
+  width:100%;max-width:520px;padding:20px;
+  max-height:70vh;overflow-y:auto;
+  padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));
+}
+.bm-list-title{font-size:17px;font-weight:700;color:var(--primary);margin-bottom:14px;}
+.bm-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px;border-radius:9px;border:1px solid var(--border);
+  margin-bottom:8px;cursor:pointer;transition:background .12s;
+}
+.bm-item:hover{background:var(--primary-soft);}
+.bm-item-icon{font-size:20px;}
+.bm-item-info{flex:1;}
+.bm-item-page{font-size:14px;font-weight:600;color:var(--primary);}
+.bm-item-date{font-size:11px;color:var(--text-m);}
+.bm-item-del{background:none;border:none;color:var(--danger);font-size:18px;cursor:pointer;padding:4px;}
+.bm-empty{text-align:center;color:var(--text-m);padding:24px;font-size:14px;}
+
+/* ── INSTALL BUTTON ── */
+.install-btn{
+  display:none;align-items:center;gap:6px;
+  padding:7px 12px;background:rgba(255,255,255,.15);
+  color:#fff;border:1px solid rgba(255,255,255,.3);
+  border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
+  min-height:44px;transition:background .15s;
+}
+.install-btn:hover{background:rgba(255,255,255,.25);}
+
+/* ── PROGRESS CARD ── */
+.progress-card{
+  background:var(--surf);border-radius:var(--r-lg);
+  border:1px solid var(--border);padding:18px;margin-bottom:18px;
+}
+.progress-card-title{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:12px;}
+.progress-items{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.progress-item{
+  background:var(--g50);border-radius:8px;padding:10px 12px;
+  border:1px solid var(--border);
+}
+.progress-item.done{background:var(--ok-soft);border-color:#9fe1cb;}
+.pi-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.pi-status{font-size:11px;color:var(--text-m);}
+.progress-item.done .pi-status{color:var(--ok);}
+
+/* ── RESET PROGRESS ── */
+.reset-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:8px;border:1.5px solid var(--danger);
+  background:var(--danger-soft);color:var(--danger);
+  font-size:13px;font-weight:600;cursor:pointer;min-height:44px;
+}
 </style>
 </head>
 <body class="rtl" id="body" lang="he">
@@ -711,6 +952,24 @@ body.en { direction:ltr; }
       <div class="header-pct" id="prog-pct">0%</div>
     </div>
     <div class="header-actions">
+      <button class="install-btn" id="install-btn" onclick="installApp()" aria-label="התקן אפליקציה">
+        ⬇️ <span id="install-txt">התקן</span>
+      </button>
+      <button class="hdr-btn" onclick="openSearch()" aria-label="חיפוש" title="חיפוש">
+        <span>🔍</span><span id="btn-search-txt" class="hdr-btn-label"></span>
+      </button>
+      <button class="hdr-btn" onclick="openFlashcards()" aria-label="כרטיסיות" title="כרטיסיות לימוד">
+        <span>🃏</span><span class="hdr-btn-label"></span>
+      </button>
+      <button class="hdr-btn" onclick="openSLACalc()" aria-label="מחשבון SLA" title="מחשבון SLA">
+        <span>⏱️</span><span class="hdr-btn-label"></span>
+      </button>
+      <button class="hdr-btn" onclick="openQuickRef()" aria-label="כרטיס עזר" title="כרטיס עזר מהיר">
+        <span>📋</span><span class="hdr-btn-label"></span>
+      </button>
+      <button class="hdr-btn" onclick="openBookmarks()" aria-label="סימניות" title="סימניות">
+        <span>🔖</span><span class="hdr-btn-label"></span>
+      </button>
       <button class="hdr-btn" onclick="openViewer(1)" aria-label="פתח מדריך מלא">
         <span>📖</span><span id="btn-manual-txt"> מדריך</span>
       </button>
@@ -830,6 +1089,16 @@ body.en { direction:ltr; }
         <span class="ov-topic" data-i18n="ov_topic_tasks">רשימת משימות</span>
         <span class="ov-topic" data-i18n="ov_topic_plan">תוכנית אחזקה</span>
       </div>
+    </div>
+  </div>
+  <div class="progress-card" id="progress-card">
+    <div class="progress-card-title">📊 <span data-i18n="my_progress">ההתקדמות שלי</span></div>
+    <div class="progress-items" id="progress-items"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;">
+      <div style="font-size:13px;color:var(--text-m);">
+        <span data-i18n="total_score">ניקוד כולל:</span> <strong id="ov-score">0</strong>
+      </div>
+      <button class="reset-btn" onclick="resetProgress()" data-i18n="reset_progress">🗑 אפס התקדמות</button>
     </div>
   </div>
   <div class="ibox info" style="margin-top:20px;">
@@ -1447,6 +1716,13 @@ body.en { direction:ltr; }
         <button class="a11y-btn" id="hc-on" onclick="setContrast(true)" data-i18n="hc_high">ניגודיות גבוהה</button>
       </div>
     </div>
+    <div class="a11y-section">
+      <div class="a11y-section-title" data-i18n="a11y_dark">מצב כהה</div>
+      <div class="a11y-btn-group">
+        <button class="a11y-btn active" id="dm-off" onclick="setDarkMode(false)" data-i18n="dm_off">בהיר</button>
+        <button class="a11y-btn" id="dm-on" onclick="setDarkMode(true)" data-i18n="dm_on">🌙 כהה</button>
+      </div>
+    </div>
 
     <div class="a11y-section">
       <div class="a11y-section-title" data-i18n="a11y_motion">אנימציות</div>
@@ -1470,6 +1746,7 @@ body.en { direction:ltr; }
       </button>
       <div class="pv-ttl">📖 <span data-i18n="pv_title">מדריך SAP PM</span></div>
       <div class="pv-chap" id="pv-chap"></div>
+      <button class="bm-btn" id="pv-bm-btn" onclick="toggleBookmark()" aria-label="סמן עמוד" title="הוסף סימניה">☆</button>
       <button class="pv-x" onclick="closeViewer()" aria-label="סגור">×</button>
     </div>
     <!-- Floating back button - always visible on mobile -->
@@ -1972,8 +2249,33 @@ const TRANSLATIONS={
 };
 
 let LANG='he';
-let totalScore=0;
-let completedSections=new Set();
+// ── PERSISTENT STATE ──
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('sap_state') || '{}');
+    return {
+      score: saved.score || 0,
+      completed: new Set(saved.completed || []),
+      bookmarks: saved.bookmarks || {},
+      quizResults: saved.quizResults || {}
+    };
+  } catch(e) { return { score:0, completed:new Set(), bookmarks:{}, quizResults:{} }; }
+}
+function saveState() {
+  try {
+    localStorage.setItem('sap_state', JSON.stringify({
+      score: totalScore,
+      completed: [...completedSections],
+      bookmarks: pvBookmarks,
+      quizResults: quizResultsHistory
+    }));
+  } catch(e) {}
+}
+const _state = loadState();
+let totalScore = _state.score;
+let completedSections = _state.completed;
+let pvBookmarks = _state.bookmarks;
+let quizResultsHistory = _state.quizResults;
 
 function t(key){
   const tr=TRANSLATIONS[LANG];
@@ -2030,6 +2332,12 @@ function setContrast(on){
   document.getElementById('hc-off').classList.toggle('active',!on);
   try{localStorage.setItem('sap_hc',on?'1':'0');}catch(e){}
 }
+function setDarkMode(on){
+  document.getElementById('body').classList.toggle('dark',on);
+  document.getElementById('dm-on').classList.toggle('active',on);
+  document.getElementById('dm-off').classList.toggle('active',!on);
+  try{localStorage.setItem('sap_dark',on?'1':'0');}catch(e){}
+}
 
 // ── REDUCED MOTION ──
 function setMotion(on){
@@ -2070,6 +2378,7 @@ function nav(sectionId){
   if(!['overview','quiz-nav','quiz-breakdown'].includes(sectionId)){
     completedSections.add(sectionId);
     updateProgress();
+    saveState();
     if(navItem&&!navItem.querySelector('.ni-done')){
       const d=document.createElement('span');d.className='ni-done';d.textContent='✓';
       navItem.appendChild(d);
@@ -2094,6 +2403,7 @@ function updateProgress(){
 function addScore(pts){
   totalScore+=pts;
   document.getElementById('score-chip').textContent=t('score_prefix')+' '+totalScore;
+  saveState();
 }
 
 // ── PDF VIEWER ──
@@ -2420,6 +2730,8 @@ function restorePrefs(){
     if(fs) setFontSize(fs);
     const hc=localStorage.getItem('sap_hc');
     if(hc==='1') setContrast(true);
+    const dark=localStorage.getItem('sap_dark');
+    if(dark==='1') setDarkMode(true);
     applyI18n(); // apply after restoring lang
   }catch(e){
     applyI18n();
@@ -2446,12 +2758,583 @@ document.addEventListener('DOMContentLoaded',()=>{
   initQuiz('bd');
 });
 
+// ── SERVICE WORKER ──
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(r => console.log('SW registered'))
+      .catch(e => console.log('SW error:', e));
+  });
+}
+
+// ── PWA INSTALL PROMPT ──
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-btn').style.display = 'flex';
+});
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-btn').style.display = 'none';
+  deferredPrompt = null;
+});
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(r => { deferredPrompt = null; });
+}
+
 // Keyboard: Enter/Space on ov-cards
 document.addEventListener('keydown',e=>{
   if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('ov-card')){
     e.preventDefault();e.target.click();
   }
 });
+
+
+// ════════════════════════════════════════════════
+// SEARCH ENGINE
+// ════════════════════════════════════════════════
+const SEARCH_INDEX = [
+  {id:'nav-basics', title:'מבנה החלון וניווט ב-SAP', keywords:['חלון','ניווט','session','תפריט','סרגל','כלים','מצב','gui'], page:6},
+  {id:'transactions', title:'קודי טרנזקציה ומועדפים', keywords:['טרנזקציה','il01','il02','ih01','iw21','iw22','iw32','ziw37n','migo','zpmt','מועדפים','קוד'], page:11},
+  {id:'search', title:'חיפוש וואריאנטים', keywords:['חיפוש','כוכבית','wildcard','ואריאנט','תבנית','ברירת מחדל'], page:22},
+  {id:'tree-structure', title:'עץ אחזקה ומבנה היררכי', keywords:['עץ','היררכיה','רמה','מפעל','אגף','קו ייצור','zfat','negv','lodc'], page:33},
+  {id:'functional-loc', title:'מיקום פונקציונאלי', keywords:['מיקום','פונקציונאלי','il01','crte','inact','dlfl','סטטוס','לשונית','ארגון','מבנה'], page:49},
+  {id:'breakdown-process', title:'תהליך אחזקת שבר', keywords:['שבר','תקלה','breakdown','תהליך','hmi','mes','capa','clearance'], page:65},
+  {id:'notifications', title:'הודעת אחזקה IW21', keywords:['הודעה','iw21','iw22','p2','sla','עדיפות','חרום','דחוף','חשוב','מתוכנן','רמזור','sim-1','שדות חובה'], page:66},
+  {id:'goods-issue', title:'ניפוק טובין MIGO', keywords:['ניפוק','מיגו','migo','zpmt_pgio','261','חלקי חילוף','כמות','אחסון'], page:78},
+  {id:'reporting', title:'דיווח פעילות וסגירה', keywords:['דיווח','שעות','פעילות','סגירה','clearance','עבודה בפועל','מפעיל'], page:95},
+  {id:'planned-maint', title:'אחזקה מתוכננת ומונעת', keywords:['מתוכנן','מונע','רשימת משימות','תוכנית אחזקה','זימון','backlog','מחזור'], page:105},
+];
+
+function openSearch(){
+  document.getElementById('search-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('search-input').focus(), 100);
+}
+function closeSearch(){
+  document.getElementById('search-overlay').classList.remove('open');
+  document.getElementById('search-input').value='';
+  document.getElementById('search-results').innerHTML='<div class="search-empty" data-i18n="search_hint">הקלד לחיפוש בתוכן המדריך</div>';
+}
+document.getElementById('search-overlay').addEventListener('click', function(e){
+  if(e.target===this) closeSearch();
+});
+
+function doSearch(query){
+  const q = query.trim().toLowerCase();
+  const container = document.getElementById('search-results');
+  if(!q || q.length < 1){
+    container.innerHTML = '<div class="search-empty">הקלד לחיפוש...</div>';
+    return;
+  }
+  const results = SEARCH_INDEX.filter(item => {
+    return item.title.toLowerCase().includes(q) ||
+           item.keywords.some(k => k.toLowerCase().includes(q));
+  });
+  if(!results.length){
+    container.innerHTML = '<div class="search-empty">לא נמצאו תוצאות עבור "'+q+'"</div>';
+    return;
+  }
+  container.innerHTML = '';
+  results.forEach(r => {
+    const matchKw = r.keywords.filter(k=>k.toLowerCase().includes(q)).slice(0,3);
+    const snippet = matchKw.length ? 'מילות מפתח: ' + matchKw.join(', ') : '';
+    const hi = r.title.replace(new RegExp('('+q+')', 'gi'), '<mark>$1</mark>');
+    const el = document.createElement('div');
+    el.className = 'search-result';
+    el.dataset.id = r.id;
+    el.dataset.page = r.page;
+    el.onclick = function(){ goFromSearch(this.dataset.id, this.dataset.page); };
+    el.innerHTML = '<div class="search-result-title">'+hi+'</div>'+
+      (snippet?'<div class="search-result-snippet">'+snippet+'</div>':'');
+    return el;
+    container.appendChild(el);
+  });
+  void 0;
+}
+
+function goFromSearch(sectionId, page){
+  closeSearch();
+  nav(sectionId);
+}
+
+// Keyboard shortcut: / to open search
+document.addEventListener('keydown', e => {
+  if(e.key==='/' && !e.target.matches('input,textarea,select')){
+    e.preventDefault(); openSearch();
+  }
+});
+
+// ════════════════════════════════════════════════
+// FLASHCARDS
+// ════════════════════════════════════════════════
+const FLASHCARDS = [
+  {q:'IW21',a:'יצירת הודעת אחזקה חדשה'},
+  {q:'IW22',a:'שינוי / עדכון הודעת אחזקה קיימת'},
+  {q:'IW32',a:'שינוי הזמנת אחזקה'},
+  {q:'IL01',a:'יצירת מיקום פונקציונאלי חדש'},
+  {q:'IL02',a:'שינוי מיקום פונקציונאלי'},
+  {q:'IH01',a:'הצגה מבנית – עץ היררכי של אחזקה'},
+  {q:'ZIW37N',a:'דוח תקלות והזמנות – Backlog'},
+  {q:'MIGO',a:'ניפוק טובין (Goods Issue)'},
+  {q:'ZPMT_PGIO',a:'ניפוק טובין ייעודי לאחזקה'},
+  {q:'סוג תנועה 261',a:'ניפוק טובין לצורך הזמנת אחזקה'},
+  {q:'סוג הודעה P2',a:'הודעת אחזקה לשבר / תקלה'},
+  {q:'CRTE',a:'סטטוס מיקום פונקציונאלי פעיל'},
+  {q:'INACT',a:'סטטוס מיקום פונקציונאלי לא פעיל'},
+  {q:'DLFL',a:'סטטוס מיקום פונקציונאלי – מסומן למחיקה'},
+  {q:'SLA עדיפות חרום',a:'8 שעות – ציוד מושבת / בטיחות מידי'},
+  {q:'SLA עדיפות חשוב',a:'7 ימים – סיכון סביר להשבתה'},
+  {q:'SLA מתוכנן',a:'60 יום – חריגה בסיכון נמוך'},
+  {q:'SLA SIM-1',a:'24 שעות – משימות שגרתיות'},
+  {q:'רמזור ירוק ב-ZIW37N',a:'שני תאריכי ה-SLA (התחלה + סיום) בעתיד'},
+  {q:'רמזור אדום ב-ZIW37N',a:'תאריך הסיום עבר – הטיפול באיחור!'},
+  {q:'Clearance – 3 תנאי חובה',a:'1. איסוף כלים  2. ניקיון סביבה  3. החזרת ציוד תקין + אישור מפעיל'},
+  {q:'ALT + TAB ב-SAP',a:'מעבר בין Sessions פתוחים'},
+  {q:'כמה Sessions ניתן לפתוח?',a:'עד 6 Sessions במקביל'},
+  {q:'ואריאנט ברירת מחדל',a:'שם ואריאנט המכיל _U + שם המשתמש'},
+  {q:'* (כוכבית) בחיפוש SAP',a:'Wildcard – מחליף כל מספר תווים לא ידועים'},
+];
+
+let fcIndex = 0;
+let fcShuffled = [];
+let fcKnown = new Set();
+
+function openFlashcards(){
+  document.getElementById('fc-overlay').classList.add('open');
+  initFlashcards();
+}
+function closeFlashcards(){
+  document.getElementById('fc-overlay').classList.remove('open');
+}
+function initFlashcards(){
+  fcShuffled = [...FLASHCARDS].sort(()=>Math.random()-.5);
+  fcIndex = 0;
+  fcKnown = new Set();
+  document.getElementById('fc-done').classList.remove('show');
+  showFCCard();
+}
+function showFCCard(){
+  if(fcIndex >= fcShuffled.length){
+    document.getElementById('fc-card').style.display='none';
+    document.getElementById('fc-answer').classList.remove('show');
+    document.getElementById('fc-btns').innerHTML='';
+    document.getElementById('fc-done').classList.add('show');
+    addScore(5);
+    return;
+  }
+  const card = fcShuffled[fcIndex];
+  document.getElementById('fc-card').style.display='flex';
+  document.getElementById('fc-question').textContent = card.q;
+  document.getElementById('fc-answer').textContent = card.a;
+  document.getElementById('fc-answer').classList.remove('show');
+  document.getElementById('fc-progress').textContent = (fcIndex+1)+' / '+fcShuffled.length;
+  document.getElementById('fc-btns').innerHTML =
+    '<button class="fc-btn fc-btn-show" onclick="showFCAnswer()" data-i18n="fc_show">הצג תשובה</button>';
+  document.getElementById('fc-done').classList.remove('show');
+}
+function showFCAnswer(){
+  document.getElementById('fc-answer').classList.add('show');
+  document.getElementById('fc-btns').innerHTML =
+    '<button class="fc-btn fc-btn-know" onclick="fcNext(true)">✓ ידעתי</button>'+
+    '<button class="fc-btn fc-btn-skip" onclick="fcNext(false)">↺ חזור</button>';
+}
+function fcNext(knew){
+  if(knew) fcKnown.add(fcIndex);
+  fcIndex++;
+  showFCCard();
+}
+
+document.getElementById('fc-overlay').addEventListener('click',function(e){
+  if(e.target===this) closeFlashcards();
+});
+
+// ════════════════════════════════════════════════
+// SLA CALCULATOR
+// ════════════════════════════════════════════════
+function openSLACalc(){
+  document.getElementById('sla-calc-overlay').classList.add('open');
+  // Set default to now
+  const now = new Date();
+  const local = new Date(now.getTime() - now.getTimezoneOffset()*60000)
+    .toISOString().slice(0,16);
+  document.getElementById('sla-open-time').value = local;
+  calcSLA();
+}
+function closeSLACalc(){
+  document.getElementById('sla-calc-overlay').classList.remove('open');
+}
+function calcSLA(){
+  const priority = parseInt(document.getElementById('sla-priority').value);
+  const openTime = document.getElementById('sla-open-time').value;
+  if(!openTime) return;
+  
+  const open = new Date(openTime);
+  const deadline = new Date(open.getTime() + priority * 60 * 60 * 1000);
+  const now = new Date();
+  const diffMs = deadline - now;
+  const diffH = diffMs / 3600000;
+  
+  const result = document.getElementById('sla-result');
+  result.classList.add('show');
+  result.className = 'sla-result show ' + (diffH > 4 ? 'ok' : diffH > 0 ? 'warn' : 'danger');
+  
+  document.getElementById('sla-deadline').textContent = 
+    deadline.toLocaleDateString('he-IL') + ' ' + 
+    deadline.toLocaleTimeString('he-IL', {hour:'2-digit',minute:'2-digit'});
+  
+  if(diffMs > 0){
+    const h = Math.floor(diffMs/3600000);
+    const m = Math.floor((diffMs%3600000)/60000);
+    document.getElementById('sla-countdown').textContent = 
+      'נותרו: ' + (h > 24 ? Math.floor(h/24)+'ד ' + (h%24)+'ש' : h+'ש '+m+'ד');
+  } else {
+    document.getElementById('sla-countdown').textContent = '⚠️ חרג מה-SLA!';
+  }
+}
+
+// Auto-update countdown every minute
+setInterval(() => {
+  if(document.getElementById('sla-calc-overlay').classList.contains('open')) calcSLA();
+}, 60000);
+
+document.getElementById('sla-calc-overlay').addEventListener('click',function(e){
+  if(e.target===this) closeSLACalc();
+});
+
+// ════════════════════════════════════════════════
+// QUICK REFERENCE
+// ════════════════════════════════════════════════
+function openQuickRef(){
+  document.getElementById('qref-overlay').classList.add('open');
+}
+function closeQuickRef(){
+  document.getElementById('qref-overlay').classList.remove('open');
+}
+document.getElementById('qref-overlay').addEventListener('click',function(e){
+  if(e.target===this) closeQuickRef();
+});
+
+// ════════════════════════════════════════════════
+// BOOKMARKS
+// ════════════════════════════════════════════════
+function toggleBookmark(){
+  const p = pvPage;
+  const btn = document.getElementById('pv-bm-btn');
+  if(pvBookmarks[p]){
+    delete pvBookmarks[p];
+    btn.textContent = '☆';
+    btn.classList.remove('saved');
+  } else {
+    pvBookmarks[p] = {
+      page: p,
+      chapter: chapterLabel(p),
+      date: new Date().toLocaleDateString('he-IL')
+    };
+    btn.textContent = '★';
+    btn.classList.add('saved');
+  }
+  saveState();
+}
+
+// Update bookmark button when page changes
+const _origPvRender = pvRender;
+// Override pvRender to also update bookmark button - called after pvRender defined
+function updateBmBtn(){
+  const btn = document.getElementById('pv-bm-btn');
+  if(!btn) return;
+  const saved = pvBookmarks && pvBookmarks[pvPage];
+  btn.textContent = saved ? '★' : '☆';
+  btn.classList.toggle('saved', !!saved);
+}
+
+function openBookmarks(){
+  document.getElementById('bm-list-overlay').classList.add('open');
+  renderBookmarks();
+}
+function closeBookmarks(){
+  document.getElementById('bm-list-overlay').classList.remove('open');
+}
+function renderBookmarks(){
+  const list = document.getElementById('bm-list');
+  const bms = Object.values(pvBookmarks || {}).sort((a,b)=>a.page-b.page);
+  if(!bms.length){
+    list.innerHTML = '<div class="bm-empty">אין סימניות עדיין.<br>לחץ ★ במדריך לסימון עמוד.</div>';
+    return;
+  }
+  list.innerHTML = '';
+  bms.forEach(bm => {
+    const div = document.createElement('div');
+    div.className = 'bm-item';
+    div.onclick = () => goToBookmark(bm.page);
+    div.innerHTML = '<span class="bm-item-icon">📄</span>'+
+      '<div class="bm-item-info">'+
+      '<div class="bm-item-page">עמוד '+bm.page+' – '+bm.chapter+'</div>'+
+      '<div class="bm-item-date">'+bm.date+'</div>'+
+      '</div>'+
+      '<button class="bm-item-del" aria-label="מחק">🗑</button>';
+    div.querySelector('.bm-item-del').onclick = (e) => delBookmark(e, bm.page);
+    list.appendChild(div);
+  });
+}
+function goToBookmark(page){
+  closeBookmarks();
+  openViewer(page);
+}
+function delBookmark(e, page){
+  e.stopPropagation();
+  delete pvBookmarks[page];
+  saveState();
+  renderBookmarks();
+  if(pvPage===page) updateBmBtn();
+}
+document.getElementById('bm-list-overlay').addEventListener('click',function(e){
+  if(e.target===this) closeBookmarks();
+});
+
+// ════════════════════════════════════════════════
+// PROGRESS CARD (Overview)
+// ════════════════════════════════════════════════
+const SECTION_META = [
+  {id:'nav-basics', label:'ניווט ב-SAP', icon:'🖥️'},
+  {id:'transactions', label:'טרנזקציות', icon:'⌨️'},
+  {id:'search', label:'חיפוש', icon:'🔍'},
+  {id:'tree-structure', label:'עץ אחזקה', icon:'🌳'},
+  {id:'functional-loc', label:'מיקום פונקציונאלי', icon:'📍'},
+  {id:'breakdown-process', label:'תהליך שבר', icon:'⚠️'},
+  {id:'notifications', label:'הודעת אחזקה', icon:'📋'},
+  {id:'goods-issue', label:'ניפוק', icon:'📦'},
+  {id:'reporting', label:'דיווח וסגירה', icon:'📊'},
+  {id:'planned-maint', label:'מתוכנן', icon:'📅'},
+];
+
+function renderProgressCard(){
+  const wrap = document.getElementById('progress-items');
+  if(!wrap) return;
+  wrap.innerHTML = SECTION_META.map(s => {
+    const done = completedSections.has(s.id);
+    return '<div class="progress-item'+(done?' done':'')+'">'+
+      '<div class="pi-title">'+s.icon+' '+s.label+'</div>'+
+      '<div class="pi-status">'+(done?'✅ הושלם':'○ טרם נצפה')+'</div>'+
+      '</div>';
+    container.appendChild(el);
+  });
+  void 0;
+  const ovScore = document.getElementById('ov-score');
+  if(ovScore) ovScore.textContent = totalScore;
+}
+
+function resetProgress(){
+  if(!confirm('לאפס את כל ההתקדמות והניקוד?')) return;
+  totalScore = 0;
+  completedSections = new Set();
+  pvBookmarks = {};
+  quizResultsHistory = {};
+  saveState();
+  document.getElementById('score-chip').textContent = t('score_prefix') + ' 0';
+  updateProgress();
+  renderProgressCard();
+  // Remove done indicators from sidebar
+  document.querySelectorAll('.ni-done').forEach(el => el.remove());
+}
+
+// ════════════════════════════════════════════════
+// QUIZ HISTORY
+// ════════════════════════════════════════════════
+const _origShowResults = showResults;
+// Wrap showResults to save history
+const _realShowResults = showResults;
+showResults = function(qid) {
+  const s = QS[qid];
+  const correct = s.answers.filter((a,i) => a===s.data[i].correct).length;
+  const pct = Math.round((correct/s.data.length)*100);
+  if(!quizResultsHistory[qid]) quizResultsHistory[qid] = [];
+  quizResultsHistory[qid].push({
+    score: pct,
+    date: new Date().toLocaleDateString('he-IL'),
+    correct,
+    total: s.data.length
+  });
+  saveState();
+  _realShowResults(qid);
+};
+
+// ════════════════════════════════════════════════
+// OVERRIDE openViewer to update bookmark btn
+// ════════════════════════════════════════════════
+const _origOpenViewer = openViewer;
+openViewer = function(page){
+  _origOpenViewer(page);
+  setTimeout(updateBmBtn, 200);
+};
+
+const _origPvGo = pvGo;
+pvGo = function(p){
+  _origPvGo(p);
+  updateBmBtn();
+};
+
+// ════════════════════════════════════════════════
+// INIT OVERRIDES
+// ════════════════════════════════════════════════
+const _origDomReady = document.addEventListener;
+document.addEventListener('DOMContentLoaded', () => {
+  renderProgressCard();
+  // Restore completed sections visual state
+  completedSections.forEach(sid => {
+    const navItem = document.querySelector('[data-section="'+sid+'"]');
+    if(navItem && !navItem.querySelector('.ni-done')){
+      const d = document.createElement('span');
+      d.className='ni-done'; d.textContent='✓';
+      navItem.appendChild(d);
+    }
+  });
+  updateProgress();
+  document.getElementById('score-chip').textContent = t('score_prefix') + ' ' + totalScore;
+  
+  // Add dark mode keys to translations
+  ['he','en','ru','ar'].forEach(l => {
+    if(TRANSLATIONS[l]) {
+      TRANSLATIONS[l].a11y_dark = {he:'מצב כהה',en:'Dark Mode',ru:'Тёмный режим',ar:'الوضع الداكن'}[l];
+      TRANSLATIONS[l].dm_off = {he:'בהיר ☀️',en:'Light ☀️',ru:'Светлый ☀️',ar:'فاتح ☀️'}[l];
+      TRANSLATIONS[l].dm_on = {he:'🌙 כהה',en:'🌙 Dark',ru:'🌙 Тёмный',ar:'🌙 داكن'}[l];
+      TRANSLATIONS[l].my_progress = {he:'ההתקדמות שלי',en:'My Progress',ru:'Мой прогресс',ar:'تقدمي'}[l];
+      TRANSLATIONS[l].total_score = {he:'ניקוד כולל:',en:'Total Score:',ru:'Общий счёт:',ar:'النقاط الكلية:'}[l];
+      TRANSLATIONS[l].reset_progress = {he:'🗑 אפס התקדמות',en:'🗑 Reset Progress',ru:'🗑 Сбросить прогресс',ar:'🗑 إعادة التعيين'}[l];
+      TRANSLATIONS[l].search_hint = {he:'הקלד לחיפוש בתוכן',en:'Type to search content',ru:'Введите для поиска',ar:'اكتب للبحث'}[l];
+      TRANSLATIONS[l].fc_title = {he:'כרטיסיות לימוד',en:'Flashcards',ru:'Карточки',ar:'بطاقات التعلم'}[l];
+      TRANSLATIONS[l].fc_tap = {he:'לחץ לגילוי התשובה',en:'Tap to reveal answer',ru:'Нажмите для ответа',ar:'انقر للكشف'}[l];
+      TRANSLATIONS[l].fc_show = {he:'הצג תשובה',en:'Show Answer',ru:'Показать ответ',ar:'أظهر الجواب'}[l];
+      TRANSLATIONS[l].fc_done = {he:'סיימת את כל הכרטיסיות!',en:'All flashcards done!',ru:'Все карточки пройдены!',ar:'انتهيت من جميع البطاقات!'}[l];
+      TRANSLATIONS[l].sla_calc_title = {he:'מחשבון SLA',en:'SLA Calculator',ru:'Калькулятор SLA',ar:'حاسبة SLA'}[l];
+      TRANSLATIONS[l].sla_priority_label = {he:'עדיפות',en:'Priority',ru:'Приоритет',ar:'الأولوية'}[l];
+      TRANSLATIONS[l].sla_open_time = {he:'זמן פתיחת תקלה',en:'Fault Open Time',ru:'Время открытия',ar:'وقت الفتح'}[l];
+      TRANSLATIONS[l].sla_deadline_label = {he:'יש לסיים עד:',en:'Must complete by:',ru:'Выполнить до:',ar:'يجب الإنجاز بحلول:'}[l];
+      TRANSLATIONS[l].qref_title = {he:'כרטיס עזר מהיר – SAP PM',en:'Quick Reference Card – SAP PM',ru:'Шпаргалка – SAP PM',ar:'بطاقة مرجعية سريعة – SAP PM'}[l];
+      TRANSLATIONS[l].bookmarks_title = {he:'הסימניות שלי',en:'My Bookmarks',ru:'Мои закладки',ar:'علاماتي المرجعية'}[l];
+      TRANSLATIONS[l].pv_back = {he:'חזרה לאפליקציה',en:'Back to App',ru:'К приложению',ar:'العودة للتطبيق'}[l];
+    }
+  });
+  applyI18n();
+});
 </script>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true">
+  <div class="search-box">
+    <div class="search-input-wrap">
+      <span>🔍</span>
+      <input type="search" class="search-input" id="search-input" 
+        placeholder="חיפוש... (IW21, SLA, ניפוק...)" 
+        oninput="doSearch(this.value)" autofocus>
+      <button onclick="closeSearch()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-m);min-height:44px;">×</button>
+    </div>
+    <div class="search-results" id="search-results">
+      <div class="search-empty" data-i18n="search_hint">הקלד לחיפוש בתוכן המדריך</div>
+    </div>
+  </div>
+</div>
+<!-- FLASHCARDS -->
+<div class="fc-overlay" id="fc-overlay" role="dialog" aria-modal="true">
+  <div class="fc-modal">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div style="font-size:17px;font-weight:700;color:var(--primary);">🃏 <span data-i18n="fc_title">כרטיסיות לימוד</span></div>
+      <button onclick="closeFlashcards()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-m);min-height:44px;">×</button>
+    </div>
+    <div class="fc-progress" id="fc-progress">1 / 20</div>
+    <div class="fc-card" id="fc-card" onclick="showFCAnswer()">
+      <div class="fc-card-text" id="fc-question">?</div>
+      <div class="fc-card-hint" data-i18n="fc_tap">לחץ לגילוי התשובה</div>
+    </div>
+    <div class="fc-answer" id="fc-answer"></div>
+    <div class="fc-btns" id="fc-btns">
+      <button class="fc-btn fc-btn-show" onclick="showFCAnswer()" data-i18n="fc_show">הצג תשובה</button>
+    </div>
+    <div class="fc-done" id="fc-done">
+      <div style="font-size:40px;margin-bottom:8px;">🎉</div>
+      <span data-i18n="fc_done">סיימת את כל הכרטיסיות!</span>
+      <br><br>
+      <button class="btn btn-p" onclick="initFlashcards()">חזור מהתחלה ↺</button>
+    </div>
+  </div>
+</div>
+<!-- SLA CALCULATOR -->
+<div class="sla-calc-overlay" id="sla-calc-overlay" role="dialog" aria-modal="true">
+  <div class="sla-calc-modal">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div class="sla-calc-title">⏱️ <span data-i18n="sla_calc_title">מחשבון SLA</span></div>
+      <button onclick="closeSLACalc()" style="background:none;border:none;font-size:22px;cursor:pointer;min-height:44px;">×</button>
+    </div>
+    <div class="sla-field">
+      <div class="sla-label" data-i18n="sla_priority_label">עדיפות</div>
+      <select class="sla-select" id="sla-priority" onchange="calcSLA()">
+        <option value="8">🔴 חרום/דחוף – 8 שעות</option>
+        <option value="24">⚪ SIM-1 – 24 שעות</option>
+        <option value="168">🟡 חשוב – 7 ימים</option>
+        <option value="1440">🔵 מתוכנן – 60 ימים</option>
+      </select>
+    </div>
+    <div class="sla-field">
+      <div class="sla-label" data-i18n="sla_open_time">זמן פתיחת תקלה</div>
+      <input type="datetime-local" class="sla-datetime" id="sla-open-time" oninput="calcSLA()">
+    </div>
+    <div class="sla-result" id="sla-result">
+      <div data-i18n="sla_deadline_label" style="font-size:13px;color:var(--text-m);margin-bottom:4px;">יש לסיים עד:</div>
+      <div class="sla-deadline" id="sla-deadline">--</div>
+      <div class="sla-countdown" id="sla-countdown"></div>
+    </div>
+  </div>
+</div>
+<!-- QUICK REFERENCE -->
+<div class="qref-overlay" id="qref-overlay" role="dialog" aria-modal="true">
+  <div class="qref-modal">
+    <div class="qref-header">
+      <div class="qref-title">📋 <span data-i18n="qref_title">כרטיס עזר מהיר – SAP PM</span></div>
+      <button class="qref-print-btn" onclick="window.print()">🖨️</button>
+      <button onclick="closeQuickRef()" style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer;min-height:44px;margin-inline-start:4px;">×</button>
+    </div>
+    <div class="qref-body">
+      <div class="qref-section">
+        <div class="qref-section-title">טרנזקציות עיקריות</div>
+        <div class="qref-item"><span class="qref-key">IL01</span><span class="qref-val">יצירת מיקום פונקציונאלי</span></div>
+        <div class="qref-item"><span class="qref-key">IL02</span><span class="qref-val">שינוי מיקום פונקציונאלי</span></div>
+        <div class="qref-item"><span class="qref-key">IH01</span><span class="qref-val">הצגה מבנית – עץ היררכי</span></div>
+        <div class="qref-item"><span class="qref-key">IW21</span><span class="qref-val">יצירת הודעת אחזקה</span></div>
+        <div class="qref-item"><span class="qref-key">IW22</span><span class="qref-val">שינוי הודעת אחזקה</span></div>
+        <div class="qref-item"><span class="qref-key">IW32</span><span class="qref-val">שינוי הזמנת אחזקה</span></div>
+        <div class="qref-item"><span class="qref-key">ZIW37N</span><span class="qref-val">דוח תקלות והזמנות</span></div>
+        <div class="qref-item"><span class="qref-key">MIGO</span><span class="qref-val">ניפוק טובין (סוג תנועה 261)</span></div>
+        <div class="qref-item"><span class="qref-key">ZPMT_PGIO</span><span class="qref-val">ניפוק ייעודי לאחזקה</span></div>
+      </div>
+      <div class="qref-section">
+        <div class="qref-section-title">SLA – עדיפויות וזמני תגובה</div>
+        <div class="qref-item"><span class="qref-key" style="background:var(--danger)">🔴 חרום</span><span class="qref-val">8 שעות – ציוד מושבת / בטיחות מידי</span></div>
+        <div class="qref-item"><span class="qref-key" style="background:#888">⚪ SIM-1</span><span class="qref-val">24 שעות – משימות שגרתיות</span></div>
+        <div class="qref-item"><span class="qref-key" style="background:var(--warn)">🟡 חשוב</span><span class="qref-val">7 ימים – סיכון סביר להשבתה</span></div>
+        <div class="qref-item"><span class="qref-key" style="background:var(--primary-l)">🔵 מתוכנן</span><span class="qref-val">60 ימים – סיכון נמוך</span></div>
+      </div>
+      <div class="qref-section">
+        <div class="qref-section-title">צ׳קליסט Clearance</div>
+        <div class="qref-item"><span class="qref-key" style="background:var(--ok)">✅ 1</span><span class="qref-val">איסוף כלים וציוד שאינו בשימוש</span></div>
+        <div class="qref-item"><span class="qref-key" style="background:var(--ok)">✅ 2</span><span class="qref-val">ניקיון ציוד וסביבת העבודה</span></div>
+        <div class="qref-item"><span class="qref-key" style="background:var(--ok)">✅ 3</span><span class="qref-val">החזרת ציוד תקין לייצור + אישור מפעיל</span></div>
+      </div>
+      <div class="qref-section">
+        <div class="qref-section-title">רמזור SLA בדוח ZIW37N</div>
+        <div class="qref-item"><span class="qref-key" style="background:var(--ok)">🟢 ירוק</span><span class="qref-val">שני התאריכים בעתיד</span></div>
+        <div class="qref-item"><span class="qref-key" style="background:var(--warn)">🟡 צהוב</span><span class="qref-val">התחלה עברה, סיום בעתיד</span></div>
+        <div class="qref-item"><span class="qref-key" style="background:var(--danger)">🔴 אדום</span><span class="qref-val">תאריך סיום עבר – באיחור!</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- BOOKMARKS -->
+<div class="bm-list-overlay" id="bm-list-overlay" role="dialog" aria-modal="true">
+  <div class="bm-list-panel">
+    <div class="bm-list-title">🔖 <span data-i18n="bookmarks_title">הסימניות שלי</span></div>
+    <div id="bm-list"></div>
+  </div>
+</div>
 </body>
 </html>
