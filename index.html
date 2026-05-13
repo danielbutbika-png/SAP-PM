@@ -532,6 +532,7 @@ body.en { direction:ltr; }
   height:min(95vh,920px);
   display:flex;flex-direction:column;overflow:hidden;
   box-shadow:0 24px 80px rgba(0,0,0,.6);
+  position:relative;
 }
 .pv-top{
   display:flex;align-items:center;gap:9px;
@@ -656,6 +657,37 @@ body.en { direction:ltr; }
   .content-section{display:block!important;}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* Floating back button - always visible */
+.pv-float-back{
+  display:none;
+  position:absolute;
+  top:70px;
+  inset-inline-start:12px;
+  z-index:10001;
+}
+.pv-float-back button{
+  display:flex;align-items:center;gap:6px;
+  background:#1a3a5c;
+  color:#fff;
+  border:2px solid #7dd3b0;
+  border-radius:24px;
+  padding:10px 18px;
+  font-size:16px;font-weight:700;
+  cursor:pointer;
+  box-shadow:0 4px 16px rgba(0,0,0,0.4);
+  min-height:48px;
+}
+.pv-float-back button:active{
+  background:#2563a8;
+  transform:scale(0.96);
+}
+
+/* Show on mobile */
+@media(max-width:640px){
+  .pv-float-back{ display:block; }
+  .pv-x{ display:none; }
+}
 </style>
 </head>
 <body class="rtl" id="body" lang="he">
@@ -1439,6 +1471,13 @@ body.en { direction:ltr; }
       <div class="pv-ttl">📖 <span data-i18n="pv_title">מדריך SAP PM</span></div>
       <div class="pv-chap" id="pv-chap"></div>
       <button class="pv-x" onclick="closeViewer()" aria-label="סגור">×</button>
+    </div>
+    <!-- Floating back button - always visible on mobile -->
+    <div class="pv-float-back">
+      <button onclick="closeViewer()" aria-label="חזרה לאפליקציה">
+        <span style="font-size:20px;">‹</span>
+        <span data-i18n="pv_back">חזרה</span>
+      </button>
     </div>
     <div class="pv-body">
       <div id="pv-loading" style="display:none;position:absolute;inset:0;background:#1e1e1e;z-index:10;flex-direction:column;align-items:center;justify-content:center;gap:14px;">
